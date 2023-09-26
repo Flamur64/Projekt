@@ -22,6 +22,10 @@
     <label for="newDescription">Beschreibung:</label>
     <input type="text" id="newDescription" placeholder="Geben Sie eine Beschreibung ein">
     
+    <!-- Textfeld zur Eingabe des Fälligkeitsdatums -->
+    <label for="newDueDate">Fälligkeitsdatum:</label>
+    <input type="text" id="newDueDate" placeholder="Geben Sie das Fälligkeitsdatum ein (optional)">
+    
     <button id="addCustomTaskButton">Hinzufügen</button>
 
     <!-- Suchfeld -->
@@ -103,9 +107,11 @@
         addCustomTaskButton.addEventListener("click", function() {
             const newTaskInput = document.getElementById("newTask");
             const newDescriptionInput = document.getElementById("newDescription");
+            const newDueDateInput = document.getElementById("newDueDate");
             
             const newTaskTitle = newTaskInput.value.trim(); // Den eingegebenen Titel bereinigen
             const newTaskDescription = newDescriptionInput.value.trim(); // Die eingegebene Beschreibung bereinigen
+            const newDueDate = newDueDateInput.value.trim(); // Das eingegebene Fälligkeitsdatum bereinigen
 
             if (newTaskTitle) {
                 // Prüfe, ob das Textfeld für den Titel nicht leer ist
@@ -115,7 +121,7 @@
                 tasksData.push({
                     title: newTaskTitle,
                     description: newTaskDescription, // Beschreibung hinzufügen
-                    dueDate: "", // Fälligkeitsdatum ist leer (optional)
+                    dueDate: newDueDate, // Fälligkeitsdatum hinzufügen
                     status: "Ausstehend" // Neue Aufgaben beginnen normalerweise als "Ausstehend"
                 });
 
@@ -125,6 +131,7 @@
                 // Leere die Textfelder nach dem Hinzufügen
                 newTaskInput.value = "";
                 newDescriptionInput.value = "";
+                newDueDateInput.value = "";
             }
         });
 
