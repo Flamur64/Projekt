@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aufgabenliste</title>
+</head>
+<body>
+    <h1>Aufgabenliste</h1>
+    
+    <!-- Sortieroptionen -->
+    <label for="sortOption">Sortieren nach:</label>
+    <select id="sortOption">
+        <option value="dueDate">Fälligkeitsdatum</option>
+        <option value="title">Titel</option>
+        <option value="status">Status</option>
+    </select>
+
+    <!-- Textfeld zum Hinzufügen eigener To-Dos -->
+    <label for="newTask">Neue Aufgabe:</label>
+    <input type="text" id="newTask" placeholder="Geben Sie eine neue Aufgabe ein">
+    <button id="addCustomTaskButton">Hinzufügen</button>
+
+    <!-- Aufgabenliste -->
+    <table>
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Beschreibung</th>
+                <th>Fälligkeitsdatum</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="taskList">
+            <!-- Hier werden die Aufgaben dynamisch eingefügt -->
+        </tbody>
+    </table>
+
+    <script>
+        // Hier fügst du JavaScript-Code ein, um die Aufgabenliste aus der Datenbank abzurufen
+        // und sie basierend auf der ausgewählten Sortieroption anzuzeigen.
+        // Dies kann mithilfe von Ajax- oder Fetch-Anfragen erfolgen.
+
+        // Erstelle eine leere Aufgabenliste (kann später mit Daten aus der Datenbank gefüllt werden)
+        let tasksData = [];
+
+        // Funktion zum Rendern der Aufgabenliste
+        function renderTasks() {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = ""; // Lösche den aktuellen Inhalt der Aufgabenliste
+
+            // Durchlaufe alle Aufgaben und füge sie zur Tabelle hinzu
+            tasksData.forEach((task, index) => {
+                const row = document.createElement("tr");
+
+                // Titel
+                const titleCell = document.createElement("td");
+                titleCell.textContent = task.title;
+                row.appendChild(titleCell);
+
+                // Beschreibung
+                const descriptionCell = document.createElement("td");
+                descriptionCell.textContent = task.description;
+                row.appendChild(descriptionCell);
+
+                // Fälligkeitsdatum
+                const dueDateCell = document.createElement("td");
+                dueDateCell.textContent = task.dueDate;
+                row.appendChild(dueDateCell);
+
+                // Status
+                const statusCell = document.createElement("td");
+                statusCell.textContent = task.status;
+                row.appendChild(statusCell);
+
+                // Hinzufügen eines Buttons zum Ändern des Status
+                const statusChangeButton = document.createElement("button");
+                statusChangeButton.textContent = "Status ändern";
+                statusChangeButton.addEventListener("click", () => {
+                    // Hier kannst du die Logik zum Ändern des Status implementieren
+                    // Aktualisiere den Status in der tasksData und rufe renderTasks() erneut auf
+                });
+                row.appendChild(statusChangeButton);
+
+                taskList.appendChild(row);
+            });
+        }
+
+        // Event-Handler für das Hinzufügen einer benutzerdefinierten Aufgabe
+        const addCustomTaskButton = document.getElementById("addCustomTaskButton");
+        addCustomTaskButton.addEventListener("click", function() {
+            const newTaskInput = document.getElementById("newTask");
+            const newTaskTitle = newTaskInput.value.trim(); // Den eingegebenen Text bereinigen
+
+            if (newTaskTitle) {
+                // Prüfe, ob das Textfeld nicht leer ist
+
+                // Hier kannst du die Logik zum Hinzufügen der benutzerdefinierten Aufgabe implementieren
+                // Zum Beispiel: Füge die Aufgabe zur tasksData-Liste hinzu
+                tasksData.push({
+                    title: newTaskTitle,
+                    description: "", // Beschreibung ist leer (optional)
+                    dueDate: "", // Fälligkeitsdatum ist leer (optional)
+                    status: "Ausstehend" // Neue Aufgaben beginnen normalerweise als "Ausstehend"
+                });
+
+                // Aktualisiere die Aufgabenliste
+                renderTasks();
+
+                // Leere das Textfeld nach dem Hinzufügen
+                newTaskInput.value = "";
+            }
+        });
+
+        // Rufe die initialen Aufgaben auf
+        renderTasks();
+    </script>
+</body>
+</html>
