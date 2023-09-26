@@ -17,6 +17,11 @@
     <!-- Textfeld zum Hinzufügen eigener To-Dos -->
     <label for="newTask">Neue Aufgabe:</label>
     <input type="text" id="newTask" placeholder="Geben Sie eine neue Aufgabe ein">
+    
+    <!-- Textfeld zur Eingabe einer Beschreibung -->
+    <label for="newDescription">Beschreibung:</label>
+    <input type="text" id="newDescription" placeholder="Geben Sie eine Beschreibung ein">
+    
     <button id="addCustomTaskButton">Hinzufügen</button>
 
     <!-- Suchfeld -->
@@ -81,8 +86,10 @@
                     const statusChangeButton = document.createElement("button");
                     statusChangeButton.textContent = "Status ändern";
                     statusChangeButton.addEventListener("click", () => {
-                        // Hier kannst du die Logik zum Ändern des Status implementieren
-                        // Aktualisiere den Status in der tasksData und rufe renderTasks() erneut auf
+                        // Ändere den Status der Aufgabe zwischen "Ausstehend" und "Erledigt"
+                        task.status = task.status === "Ausstehend" ? "Erledigt" : "Ausstehend";
+                        // Aktualisiere die Aufgabenliste nach der Statusänderung
+                        renderTasks();
                     });
                     row.appendChild(statusChangeButton);
 
@@ -95,16 +102,19 @@
         const addCustomTaskButton = document.getElementById("addCustomTaskButton");
         addCustomTaskButton.addEventListener("click", function() {
             const newTaskInput = document.getElementById("newTask");
-            const newTaskTitle = newTaskInput.value.trim(); // Den eingegebenen Text bereinigen
+            const newDescriptionInput = document.getElementById("newDescription");
+            
+            const newTaskTitle = newTaskInput.value.trim(); // Den eingegebenen Titel bereinigen
+            const newTaskDescription = newDescriptionInput.value.trim(); // Die eingegebene Beschreibung bereinigen
 
             if (newTaskTitle) {
-                // Prüfe, ob das Textfeld nicht leer ist
+                // Prüfe, ob das Textfeld für den Titel nicht leer ist
 
                 // Hier kannst du die Logik zum Hinzufügen der benutzerdefinierten Aufgabe implementieren
                 // Zum Beispiel: Füge die Aufgabe zur tasksData-Liste hinzu
                 tasksData.push({
                     title: newTaskTitle,
-                    description: "", // Beschreibung ist leer (optional)
+                    description: newTaskDescription, // Beschreibung hinzufügen
                     dueDate: "", // Fälligkeitsdatum ist leer (optional)
                     status: "Ausstehend" // Neue Aufgaben beginnen normalerweise als "Ausstehend"
                 });
@@ -112,8 +122,9 @@
                 // Aktualisiere die Aufgabenliste
                 renderTasks();
 
-                // Leere das Textfeld nach dem Hinzufügen
+                // Leere die Textfelder nach dem Hinzufügen
                 newTaskInput.value = "";
+                newDescriptionInput.value = "";
             }
         });
 
