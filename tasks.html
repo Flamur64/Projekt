@@ -19,6 +19,10 @@
     <input type="text" id="newTask" placeholder="Geben Sie eine neue Aufgabe ein">
     <button id="addCustomTaskButton">Hinzufügen</button>
 
+    <!-- Suchfeld -->
+    <label for="searchTask">Suche:</label>
+    <input type="text" id="searchTask" placeholder="Suche nach Aufgaben">
+
     <!-- Aufgabenliste -->
     <table>
         <thead>
@@ -49,38 +53,41 @@
 
             // Durchlaufe alle Aufgaben und füge sie zur Tabelle hinzu
             tasksData.forEach((task, index) => {
-                const row = document.createElement("tr");
+                // Hier prüfen wir, ob die Suche aktiv ist und ob der Titel der Aufgabe den Suchbegriff enthält
+                if (!isSearching || task.title.includes(searchTerm)) {
+                    const row = document.createElement("tr");
 
-                // Titel
-                const titleCell = document.createElement("td");
-                titleCell.textContent = task.title;
-                row.appendChild(titleCell);
+                    // Titel
+                    const titleCell = document.createElement("td");
+                    titleCell.textContent = task.title;
+                    row.appendChild(titleCell);
 
-                // Beschreibung
-                const descriptionCell = document.createElement("td");
-                descriptionCell.textContent = task.description;
-                row.appendChild(descriptionCell);
+                    // Beschreibung
+                    const descriptionCell = document.createElement("td");
+                    descriptionCell.textContent = task.description;
+                    row.appendChild(descriptionCell);
 
-                // Fälligkeitsdatum
-                const dueDateCell = document.createElement("td");
-                dueDateCell.textContent = task.dueDate;
-                row.appendChild(dueDateCell);
+                    // Fälligkeitsdatum
+                    const dueDateCell = document.createElement("td");
+                    dueDateCell.textContent = task.dueDate;
+                    row.appendChild(dueDateCell);
 
-                // Status
-                const statusCell = document.createElement("td");
-                statusCell.textContent = task.status;
-                row.appendChild(statusCell);
+                    // Status
+                    const statusCell = document.createElement("td");
+                    statusCell.textContent = task.status;
+                    row.appendChild(statusCell);
 
-                // Hinzufügen eines Buttons zum Ändern des Status
-                const statusChangeButton = document.createElement("button");
-                statusChangeButton.textContent = "Status ändern";
-                statusChangeButton.addEventListener("click", () => {
-                    // Hier kannst du die Logik zum Ändern des Status implementieren
-                    // Aktualisiere den Status in der tasksData und rufe renderTasks() erneut auf
-                });
-                row.appendChild(statusChangeButton);
+                    // Hinzufügen eines Buttons zum Ändern des Status
+                    const statusChangeButton = document.createElement("button");
+                    statusChangeButton.textContent = "Status ändern";
+                    statusChangeButton.addEventListener("click", () => {
+                        // Hier kannst du die Logik zum Ändern des Status implementieren
+                        // Aktualisiere den Status in der tasksData und rufe renderTasks() erneut auf
+                    });
+                    row.appendChild(statusChangeButton);
 
-                taskList.appendChild(row);
+                    taskList.appendChild(row);
+                }
             });
         }
 
@@ -108,6 +115,16 @@
                 // Leere das Textfeld nach dem Hinzufügen
                 newTaskInput.value = "";
             }
+        });
+
+        // Suchfunktion
+        let isSearching = false;
+        let searchTerm = "";
+        const searchTaskInput = document.getElementById("searchTask");
+        searchTaskInput.addEventListener("input", function() {
+            searchTerm = searchTaskInput.value.trim();
+            isSearching = searchTerm.length > 0;
+            renderTasks();
         });
 
         // Rufe die initialen Aufgaben auf
